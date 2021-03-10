@@ -1,2 +1,2 @@
-# project-training-java-script
-Projeto de treinamento Java Script
+# project-training-angular-js
+Projeto de treinamento Angular JS
