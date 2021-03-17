@@ -1,24 +1,185 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="helloWord">
+<html lang="en" ng-app="listPhone">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello Word</title>
+    <title>Lista Telefonica</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+    <style>
+        .jumbotron {
+            width: 400px;
+            text-align: center;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        .form-control {
+            margin-bottom: 5px;
+        }
+
+        .selected {
+            background-color: yellow;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+    </style>
     <script src="lib/angular/angular.js"></script>
+    <!-- <script src="lib/angular/angular-messages.js"></script> -->
     <script>
-        angular.module("helloWord", []);
-        angular.module("helloWord").controller("helloWordCtrl", function ($scope) {
-            $scope.message = "Hello Word!";
+        angular.module("listPhone", [/*"ngMessages"*/]);
+        angular.module("listPhone").controller("listPhoneCtrl", function ($scope) {
+            $scope.app = "Lista Telefonica";
+            $scope.contacts = [
+                { name: "Maycon", phone: "111111111", color: "blue" },
+                { name: "Eloisa", phone: "222222222", color: "yellow" },
+                { name: "Schirley", phone: "333333333", color: "red" }
+            ];
+
+            // RUIM
+            // $scope.addContact = function () {
+            //     $scope.contacts.push({ name: $scope.name, phone: $scope.phone })
+            // }
+
+            // MEDIA
+            // $scope.addContact = function (name, phone) {
+            //     $scope.contacts.push({ name: name, phone: phone })
+            // }
+
+            // BOA
+            $scope.addContact = function (contact) {
+                $scope.contacts.push(angular.copy(contact));
+                delete $scope.contact;
+                $scope.contactForm.$setPristine();
+            }
+
+            $scope.operators = [
+                { name: "Oi", codigo: 14, category: "Celular" },
+                { name: "Vivo", codigo: 15, category: "Celular" },
+                { name: "Tim", codigo: 41, category: "Celular" },
+                { name: "GVT", codigo: 25, category: "Fixo" },
+                { name: "Embratel", codigo: 21, category: "Fixo" },
+            ];
+
+            $scope.deleteContact = function (contacts) {
+                $scope.contacts = contacts.filter(function (contact) {
+                    if (!contact.selected) return contact;
+                });
+            };
+
+            $scope.isSelectedContact = function (contacts) {
+                return contacts.some(function (contact) {
+                    return contact.selected;
+                });
+            };
+
         });
     </script>
 </head>
 
-<body>
-    <div ng-controller="helloWordCtrl">
-        {{message}}
+<body ng-controller="listPhoneCtrl">
+    <div class="jumbotron">
+        <!-- <h3>{{app}}</h3> -->
+        <!-- {{contacts}} -->
+        <table ng-show="contacts.length > 0" class="table">
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Operadora</th>
+                <th></th>
+            </tr>
+            <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts">
+                <td><input type="checkbox" ng-model="contact.selected"></td>
+                <td>{{contact.name}}</td>
+                <td>{{contact.phone}}</td>
+                <td>{{contact.operator.name}}</td>
+                <!-- <td ng-repeat="(key, value) in contact">
+                    {{key + '-' + value}}
+                </td> -->
+                <td>
+                    <div style="width: 20px; height: 20px" ng-style="{'background-color': contact.color}"></div>
+                </td>
+            </tr>
+        </table>
+        <hr />
+
+        <!-- RUIM E MEDIA -->
+        <!-- <input class="form-control" type="text" ng-model="name" placeholder="Nome" />
+        <input class="form-control" type="text" ng-model="phone" placeholder="Telefone" /> -->
+
+        <!-- É válido: {{contactForm.$valid}}<br>
+        É inválido: {{contactForm.$invalid}} -->
+
+        <form name="contactForm">
+            <input class="form-control" type="text" ng-model="contact.name" name="name" placeholder="Nome"
+                ng-required="true" ng-minlength="10" />
+            <input class="form-control" type="text" ng-model="contact.phone" name="phone" placeholder="Telefone"
+                ng-required="true" ng-minlength="10" ng-pattern="/^\d{4,5}-\d{4}$/" />
+            <select class="form-control" ng-model="contact.operator"
+                ng-options="operator.name for operator in operators">
+                <option value="">Selecione uma operadora</option>
+            </select>
+        </form>
+        <!-- RUIM
+        <button class="btn btn-primary btn-block" ng-click="addContact()">Adicionar Contato</button> -->
+
+        <!-- MEDIA -->
+        <!-- <button class="btn btn-primary btn-block" ng-click="addContact(name, phone)">Adicionar Contato</button> -->
+
+        <div ng-show="contactForm.name.$error.required && contactForm.name.$dirty" class="alert alert-danger">
+            Por favor, preencha o campo nome.
+        </div>
+        <div ng-show="contactForm.name.$error.minlength" class="alert alert-danger">
+            O campo nome deve ter no minimo 10 caracteres.
+        </div>
+
+        <div ng-show="contactForm.phone.$error.required && contactForm.phone.$dirty" class="alert alert-danger">
+            Por favor, preencha o campo telefone.
+        </div>
+        <div ng-show="contactForm.phone.$error.pattern" class="alert alert-danger">
+            O campo telefone deve ter o formato 99999-9999
+        </div>
+
+        <!-- <div ng-messages="contactForm.name.$error" class="alert alert-danger">
+
+            <div ng-message="required">
+                Por favor, preencha o campo nome.
+            </div>
+            <div ng-mesasage="minlength">
+                O campo nome deve ter no minimo 10 caracteres.
+            </div>
+
+            <div ng-show="required && contactForm.phone.$dirty" class="alert alert-danger">
+                Por favor, preencha o campo telefone.
+            </div>
+            <div ng-show="contactForm.phone.$error.pattern" class="alert alert-danger">
+                O campo telefone deve ter o formato 99999-9999
+            </div>
+
+        </div> -->
+
+        <!-- BOA -->
+        <button class="btn btn-primary btn-block" ng-click="addContact(contact)"
+            ng-disabled="contactForm.$invalid">Adicionar Contato</button>
+
+        <button class="btn btn-danger btn-block" ng-click="deleteContact(contacts)"
+            ng-show="isSelectedContact(contacts)">Apagar contatos</button>
+        <!-- ng-disabled="!isSelectedContact(contacts)" -->
+
+        <!-- {{name}}
+        {{phone}} -->
     </div>
+
+    <!-- <div ng-include="'footer.html'"></div> -->
+
 </body>
 
 </html>
