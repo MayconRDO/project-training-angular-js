@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
     <style>
         .jumbotron {
-            width: 600px;
+            width: 700px;
             text-align: center;
             margin-top: 20px;
             margin-left: auto;
@@ -33,15 +33,16 @@
         }
     </style>
     <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-locale_pt-br.js"></script>
     <!-- <script src="lib/angular/angular-messages.js"></script> -->
     <script>
         angular.module("listPhone", [/*"ngMessages"*/]);
-        angular.module("listPhone").controller("listPhoneCtrl", function ($scope) {
+        angular.module("listPhone").controller("listPhoneCtrl", function ($scope, $filter) {
             $scope.app = "Lista Telefonica";
             $scope.contacts = [
-                { name: "Maycon", phone: "111111111", date: new Date(), color: "blue", operator: { name: "Oi", codigo: 14, category: "Celular" } },
-                { name: "Eloisa", phone: "222222222", date: new Date(), color: "yellow", operator: { name: "GVT", codigo: 25, category: "Fixo" } },
-                { name: "Schirley", phone: "333333333", date: new Date(), color: "red", operator: { name: "Embratel", codigo: 21, category: "Fixo" } }
+                { name: $filter('uppercase')("Maycon"), phone: "111111111", date: new Date(), color: "blue", operator: { name: "Oi", codigo: 14, category: "Celular" } },
+                { name: $filter('uppercase')("Eloisa"), phone: "222222222", date: new Date(), color: "yellow", operator: { name: "GVT", codigo: 25, category: "Fixo" } },
+                { name: $filter('uppercase')("Schirley"), phone: "333333333", date: new Date(), color: "red", operator: { name: "Embratel", codigo: 21, category: "Fixo" } }
             ];
 
             // RUIM
@@ -62,11 +63,11 @@
             }
 
             $scope.operators = [
-                { name: "Oi", codigo: 14, category: "Celular" },
-                { name: "Vivo", codigo: 15, category: "Celular" },
-                { name: "Tim", codigo: 41, category: "Celular" },
-                { name: "GVT", codigo: 25, category: "Fixo" },
-                { name: "Embratel", codigo: 21, category: "Fixo" },
+                { name: "Oi", codigo: 14, category: "Celular", price: 1 },
+                { name: "Vivo", codigo: 15, category: "Celular", price: 4 },
+                { name: "Tim", codigo: 41, category: "Celular", price: 8 },
+                { name: "GVT", codigo: 25, category: "Fixo", price: 2 },
+                { name: "Embratel", codigo: 21, category: "Fixo", price: 4 },
             ];
 
             $scope.deleteContact = function (contacts) {
@@ -105,11 +106,12 @@
             </tr>
             <tr ng-class="{'selected bold': contact.selected}"
                 ng-repeat="contact in contacts | filter:criteriaSearch | orderBy:criteriaOrdering:orderingDirection">
+                <!-- /*| limitTo:2*/ -->
                 <td><input type="checkbox" ng-model="contact.selected"></td>
-                <td>{{contact.name | uppercase}}</td>
+                <td>{{contact.name}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.operator.name | lowercase}}</td>
-                <td>{{contact.date | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{contact.date | date:'EEEE dd/MM/yyyy HH:mm'}}</td>
                 <!-- <td ng-repeat="(key, value) in contact">
                     {{key + '-' + value}}
                 </td> -->
@@ -133,7 +135,7 @@
             <input class="form-control" type="text" ng-model="contact.phone" name="phone" placeholder="Telefone"
                 ng-required="true" ng-minlength="10" ng-pattern="/^\d{4,5}-\d{4}$/" />
             <select class="form-control" ng-model="contact.operator"
-                ng-options="operator.name for operator in operators | orderBy:'name'">
+                ng-options="operator.name + ' (' + (operator.price | currency) + ') ' for operator in operators | orderBy:'name'">
                 <option value="">Selecione uma operadora</option>
             </select>
         </form>
