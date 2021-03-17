@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
     <style>
         .jumbotron {
-            width: 400px;
+            width: 600px;
             text-align: center;
             margin-top: 20px;
             margin-left: auto;
@@ -17,7 +17,7 @@
         }
 
         .table {
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .form-control {
@@ -39,9 +39,9 @@
         angular.module("listPhone").controller("listPhoneCtrl", function ($scope) {
             $scope.app = "Lista Telefonica";
             $scope.contacts = [
-                { name: "Maycon", phone: "111111111", color: "blue" },
-                { name: "Eloisa", phone: "222222222", color: "yellow" },
-                { name: "Schirley", phone: "333333333", color: "red" }
+                { name: "Maycon", phone: "111111111", date: new Date(), color: "blue", operator: { name: "Oi", codigo: 14, category: "Celular" } },
+                { name: "Eloisa", phone: "222222222", date: new Date(), color: "yellow", operator: { name: "GVT", codigo: 25, category: "Fixo" } },
+                { name: "Schirley", phone: "333333333", date: new Date(), color: "red", operator: { name: "Embratel", codigo: 21, category: "Fixo" } }
             ];
 
             // RUIM
@@ -81,6 +81,11 @@
                 });
             };
 
+            $scope.orderBy = function (field) {
+                $scope.criteriaOrdering = field;
+                $scope.orderingDirection = !$scope.orderingDirection;
+            };
+
         });
     </script>
 </head>
@@ -89,18 +94,22 @@
     <div class="jumbotron">
         <!-- <h3>{{app}}</h3> -->
         <!-- {{contacts}} -->
+        <input class="form-control" type="text" ng-model="criteriaSearch" placeholder="O que você busca?">
         <table ng-show="contacts.length > 0" class="table">
             <tr>
-                <th>Nome</th>
-                <th>Telefone</th>
-                <th>Operadora</th>
                 <th></th>
+                <th><a href="" ng-click="orderBy('name')">Nome</a></th>
+                <th><a href="" ng-click="orderBy('phone')">Telefone</a></th>
+                <th>Operadora</th>
+                <th>Data</th>
             </tr>
-            <tr ng-class="{'selected bold': contact.selected}" ng-repeat="contact in contacts">
+            <tr ng-class="{'selected bold': contact.selected}"
+                ng-repeat="contact in contacts | filter:criteriaSearch | orderBy:criteriaOrdering:orderingDirection">
                 <td><input type="checkbox" ng-model="contact.selected"></td>
-                <td>{{contact.name}}</td>
+                <td>{{contact.name | uppercase}}</td>
                 <td>{{contact.phone}}</td>
-                <td>{{contact.operator.name}}</td>
+                <td>{{contact.operator.name | lowercase}}</td>
+                <td>{{contact.date | date:'dd/MM/yyyy HH:mm'}}</td>
                 <!-- <td ng-repeat="(key, value) in contact">
                     {{key + '-' + value}}
                 </td> -->
@@ -124,10 +133,11 @@
             <input class="form-control" type="text" ng-model="contact.phone" name="phone" placeholder="Telefone"
                 ng-required="true" ng-minlength="10" ng-pattern="/^\d{4,5}-\d{4}$/" />
             <select class="form-control" ng-model="contact.operator"
-                ng-options="operator.name for operator in operators">
+                ng-options="operator.name for operator in operators | orderBy:'name'">
                 <option value="">Selecione uma operadora</option>
             </select>
         </form>
+
         <!-- RUIM
         <button class="btn btn-primary btn-block" ng-click="addContact()">Adicionar Contato</button> -->
 
