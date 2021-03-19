@@ -7,88 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Telefonica</title>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
-    <style>
-        .jumbotron {
-            width: 700px;
-            text-align: center;
-            margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .table {
-            margin-top: 25px;
-        }
-
-        .form-control {
-            margin-bottom: 5px;
-        }
-
-        .selected {
-            background-color: yellow;
-        }
-
-        .bold {
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular/angular-locale_pt-br.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/listPhoneCtrl.js"></script>
+    <script src="js/services/contactsAPIService.js"></script>
     <!-- <script src="lib/angular/angular-messages.js"></script> -->
-    <script>
-        angular.module("listPhone", [/*"ngMessages"*/]);
-        angular.module("listPhone").controller("listPhoneCtrl", function ($scope, $filter) {
-            $scope.app = "Lista Telefonica";
-            $scope.contacts = [
-                { name: $filter('uppercase')("Maycon"), phone: "111111111", date: new Date(), color: "blue", operator: { name: "Oi", codigo: 14, category: "Celular" } },
-                { name: $filter('uppercase')("Eloisa"), phone: "222222222", date: new Date(), color: "yellow", operator: { name: "GVT", codigo: 25, category: "Fixo" } },
-                { name: $filter('uppercase')("Schirley"), phone: "333333333", date: new Date(), color: "red", operator: { name: "Embratel", codigo: 21, category: "Fixo" } }
-            ];
-
-            // RUIM
-            // $scope.addContact = function () {
-            //     $scope.contacts.push({ name: $scope.name, phone: $scope.phone })
-            // }
-
-            // MEDIA
-            // $scope.addContact = function (name, phone) {
-            //     $scope.contacts.push({ name: name, phone: phone })
-            // }
-
-            // BOA
-            $scope.addContact = function (contact) {
-                $scope.contacts.push(angular.copy(contact));
-                delete $scope.contact;
-                $scope.contactForm.$setPristine();
-            }
-
-            $scope.operators = [
-                { name: "Oi", codigo: 14, category: "Celular", price: 1 },
-                { name: "Vivo", codigo: 15, category: "Celular", price: 4 },
-                { name: "Tim", codigo: 41, category: "Celular", price: 8 },
-                { name: "GVT", codigo: 25, category: "Fixo", price: 2 },
-                { name: "Embratel", codigo: 21, category: "Fixo", price: 4 },
-            ];
-
-            $scope.deleteContact = function (contacts) {
-                $scope.contacts = contacts.filter(function (contact) {
-                    if (!contact.selected) return contact;
-                });
-            };
-
-            $scope.isSelectedContact = function (contacts) {
-                return contacts.some(function (contact) {
-                    return contact.selected;
-                });
-            };
-
-            $scope.orderBy = function (field) {
-                $scope.criteriaOrdering = field;
-                $scope.orderingDirection = !$scope.orderingDirection;
-            };
-
-        });
-    </script>
 </head>
 
 <body ng-controller="listPhoneCtrl">
@@ -190,7 +115,7 @@
         {{phone}} -->
     </div>
 
-    <!-- <div ng-include="'footer.html'"></div> -->
+    <!-- <div ng-include="'view/footer.html'"></div> -->
 
 </body>
 
