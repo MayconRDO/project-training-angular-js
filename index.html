@@ -13,6 +13,10 @@
     <script src="js/app.js"></script>
     <script src="js/controllers/listPhoneCtrl.js"></script>
     <script src="js/services/contactsAPIService.js"></script>
+    <script src="js/services/operatorsAPIService.js"></script>
+    <script src="js/value/configValue.js"></script>
+    <script src="js/services/serialGenerateService.js"></script>
+    <script src="js/config/serialGeneratorConfig.js"></script>
     <!-- <script src="lib/angular/angular-messages.js"></script> -->
 </head>
 
@@ -24,6 +28,7 @@
         <table ng-show="contacts.length > 0" class="table">
             <tr>
                 <th></th>
+                <!-- <th>Serial</th> -->
                 <th><a href="" ng-click="orderBy('name')">Nome</a></th>
                 <th><a href="" ng-click="orderBy('phone')">Telefone</a></th>
                 <th>Operadora</th>
@@ -33,6 +38,7 @@
                 ng-repeat="contact in contacts | filter:criteriaSearch | orderBy:criteriaOrdering:orderingDirection">
                 <!-- /*| limitTo:2*/ -->
                 <td><input type="checkbox" ng-model="contact.selected"></td>
+                <!-- <td>{{contact.serial}}</td> -->
                 <td>{{contact.name}}</td>
                 <td>{{contact.phone}}</td>
                 <td>{{contact.operator.name | lowercase}}</td>

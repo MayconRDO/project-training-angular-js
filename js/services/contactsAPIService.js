@@ -1,7 +1,7 @@
-angular.module("listPhone").factory("contactsAPI", function ($http) {
+angular.module("listPhone").factory("contactsAPI", function ($http, config) {
 
     var getContacts = function () {
-        //return $http.get("https://localhost:44337/api/contact");
+        //return $http.get(config.baseUrl + "/contact");
 
         var contacts = [
             { name: "Maycon", phone: "111111111", date: new Date(), color: "blue", operator: { name: "Oi", codigo: 14, category: "Celular" } },

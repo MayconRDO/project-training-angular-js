@@ -1,8 +1,9 @@
-angular.module("listPhone").controller("listPhoneCtrl", function ($scope, $filter, contactsAPI) {
+angular.module("listPhone").controller("listPhoneCtrl", function ($scope, contactsAPI, operatorsAPI, serialGenerator) {
 
     $scope.app = "Lista Telefonica";
 
     $scope.contacts = [];
+    $scope.operators = [];
 
     // $scope.contacts = [
     //     { name: $filter('uppercase')("Maycon"), phone: "111111111", date: new Date(), color: "blue", operator: { name: "Oi", codigo: 14, category: "Celular" } },
@@ -22,18 +23,20 @@ angular.module("listPhone").controller("listPhoneCtrl", function ($scope, $filte
 
     // BOA
     $scope.addContact = function (contact) {
+
+        contact.serial = serialGenerator.generate();
         $scope.contacts.push(angular.copy(contact));
         delete $scope.contact;
         $scope.contactForm.$setPristine();
     }
 
-    $scope.operators = [
-        { name: "Oi", codigo: 14, category: "Celular", price: 1 },
-        { name: "Vivo", codigo: 15, category: "Celular", price: 4 },
-        { name: "Tim", codigo: 41, category: "Celular", price: 8 },
-        { name: "GVT", codigo: 25, category: "Fixo", price: 2 },
-        { name: "Embratel", codigo: 21, category: "Fixo", price: 4 },
-    ];
+    // $scope.operators = [
+    //     { name: "Oi", codigo: 14, category: "Celular", price: 1 },
+    //     { name: "Vivo", codigo: 15, category: "Celular", price: 4 },
+    //     { name: "Tim", codigo: 41, category: "Celular", price: 8 },
+    //     { name: "GVT", codigo: 25, category: "Fixo", price: 2 },
+    //     { name: "Embratel", codigo: 21, category: "Fixo", price: 4 },
+    // ];
 
     $scope.deleteContact = function (contacts) {
         $scope.contacts = contacts.filter(function (contact) {
@@ -64,6 +67,11 @@ angular.module("listPhone").controller("listPhoneCtrl", function ($scope, $filte
         $scope.contacts = contactsAPI.getContacts();
     };
 
+    var loadOperators = function () {
+        $scope.operators = operatorsAPI.getOperators();
+    }
+
     loadContacts();
+    loadOperators();
 
 });
