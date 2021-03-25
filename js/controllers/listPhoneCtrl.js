@@ -64,7 +64,8 @@ angular.module("listPhone").controller("listPhoneCtrl", function ($scope, contac
         //     $scope.message = "Aconteceu um problema: " + data;
         // });
 
-        $scope.contacts = contactsAPI.getContacts();
+        //$scope.contacts = contactsAPI.getContacts();
+        $scope.error = "Não foi possível carregar os dados!";
     };
 
     var loadOperators = function () {
