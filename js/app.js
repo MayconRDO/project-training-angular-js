@@ -1,1 +1,1 @@
-angular.module("listPhone", [/*"ngMessages"*/]);
+angular.module("listPhone", [/*"ngMessages"*/ "serialGenerator", "ui"]);
