@@ -1,0 +1,65 @@
+<div class="jumbotron">
+
+    <!-- RUIM E MEDIA -->
+    <!-- <input class="form-control" type="text" ng-model="name" placeholder="Nome" />
+    <input class="form-control" type="text" ng-model="phone" placeholder="Telefone" /> -->
+
+    <!-- É válido: {{contactForm.$valid}}<br>
+    É inválido: {{contactForm.$invalid}} -->
+
+    <form name="contactForm">
+        <input class="form-control" type="text" ng-model="contact.name" name="name" placeholder="Nome"
+            ng-required="true" ng-minlength="10" />
+        <input class="form-control" type="text" ng-model="contact.phone" name="phone" placeholder="Telefone"
+            ng-required="true" ng-minlength="10" ng-pattern="/^\d{4,5}-\d{4}$/" />
+        <input class="form-control" type="text" ng-model="contact.date" name="date" placeholder="Data" ui-date>
+        <select class="form-control" ng-model="contact.operator"
+            ng-options="operator.name + ' (' + (operator.price | currency) + ') ' for operator in operators | orderBy:'name'">
+            <option value="">Selecione uma operadora</option>
+        </select>
+    </form>
+
+    <!-- RUIM
+    <button class="btn btn-primary btn-block" ng-click="addContact()">Adicionar Contato</button> -->
+
+    <!-- MEDIA -->
+    <!-- <button class="btn btn-primary btn-block" ng-click="addContact(name, phone)">Adicionar Contato</button> -->
+
+    <div ng-show="contactForm.name.$error.required && contactForm.name.$dirty" class="alert alert-danger">
+        Por favor, preencha o campo nome.
+    </div>
+    <div ng-show="contactForm.name.$error.minlength" class="alert alert-danger">
+        O campo nome deve ter no minimo 10 caracteres.
+    </div>
+
+    <div ng-show="contactForm.phone.$error.required && contactForm.phone.$dirty" class="alert alert-danger">
+        Por favor, preencha o campo telefone.
+    </div>
+    <div ng-show="contactForm.phone.$error.pattern" class="alert alert-danger">
+        O campo telefone deve ter o formato 99999-9999
+    </div>
+
+    <!-- <div ng-messages="contactForm.name.$error" class="alert alert-danger">
+
+        <div ng-message="required">
+            Por favor, preencha o campo nome.
+        </div>
+        <div ng-mesasage="minlength">
+            O campo nome deve ter no minimo 10 caracteres.
+        </div>
+
+        <div ng-show="required && contactForm.phone.$dirty" class="alert alert-danger">
+            Por favor, preencha o campo telefone.
+        </div>
+        <div ng-show="contactForm.phone.$error.pattern" class="alert alert-danger">
+            O campo telefone deve ter o formato 99999-9999
+        </div>
+
+    </div> -->
+
+    <!-- BOA -->
+    <button class="btn btn-primary btn-block" ng-click="addContact(contact)"
+        ng-disabled="contactForm.$invalid">Adicionar
+        Contato</button>
+
+</div>

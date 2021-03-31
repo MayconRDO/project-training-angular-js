@@ -15,8 +15,10 @@ angular.module("listPhone").directive("uiDate", function () {
             };
 
             element.bind("keyup", function () {
-                ctrl.$setViewValue(_formatDate(ctrl.$viewValue));
-                ctrl.$render();
+                if (ctrl.$viewValue != "undefined") {
+                    ctrl.$setViewValue(_formatDate(ctrl.$viewValue));
+                    ctrl.$render();
+                }
             });
         }
     };

@@ -1,0 +1,94 @@
+<div class="jumbotron">
+
+    <ui-accordions>
+        <ui-accordion title="Accordion 1">
+            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
+            Latin literature from 45 BC, making it over 2000 years old
+        </ui-accordion>
+        <ui-accordion title="Accordion 2">
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit
+            anim id est laborum.
+        </ui-accordion>
+        <ui-accordion title="Accordion 3">
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit
+            anim id est laborum.
+        </ui-accordion>
+        <ui-accordion title="Accordion 4">
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+            fugiat
+        </ui-accordion>
+        <ui-accordion title="Accordion 5">
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit
+            anim id est laborum.
+        </ui-accordion>
+    </ui-accordions>
+
+    <hr>
+
+    <h3>{{app}}</h3>
+    <!-- {{$id}} -->
+    <!-- {{contacts}} -->
+
+    <!-- ERRO CORS -->
+    <!-- <ui-alert title="Ops, aconteceu um problema!">
+        Não foi possível carregar os dados!
+    </ui-alert> -->
+    <!-- <ui-alert></ui-alert> -->
+
+    <!-- <div class="ui-alert">
+        <div class="ui-alert-title">
+            Ops, aconteceu um problema! {{$id}}
+        </div>
+        <div class="ui-alert-message">
+            {{error}}
+        </div>
+    </div> -->
+
+    <input class="form-control" type="text" ng-model="criteriaSearch" placeholder="O que você busca?">
+    <table ng-show="contacts.length > 0" class="table">
+        <tr>
+            <th></th>
+            <!-- <th>Serial</th> -->
+            <th><a href="" ng-click="orderBy('name')">Nome</a></th>
+            <th><a href="" ng-click="orderBy('phone')">Telefone</a></th>
+            <th>Operadora</th>
+            <th>Data</th>
+        </tr>
+        <tr ng-class="{'selected bold': contact.selected}"
+            ng-repeat="contact in contacts | filter:criteriaSearch | orderBy:criteriaOrdering:orderingDirection">
+            <!-- /*| limitTo:2*/ -->
+            <td><input type="checkbox" ng-model="contact.selected"></td>
+            <!-- <td>{{contact.serial}}</td> -->
+            <td>
+                <a href="#/detailsContact/{{contact.id}}">{{contact.name | name}}</a>
+            </td>
+            <td>{{contact.phone}}</td>
+            <td>{{contact.operator.name | lowercase}}</td>
+            <td>{{contact.date | date:'EEEE dd/MM/yyyy HH:mm'}}</td>
+            <!-- <td ng-repeat="(key, value) in contact">
+                {{key + '-' + value}}
+            </td> -->
+            <td>
+                <div style="width: 20px; height: 20px" ng-style="{'background-color': contact.color}"></div>
+            </td>
+        </tr>
+    </table>
+    <hr />
+
+    <a class="btn btn-primary btn-block" href="#/newContact">Novo contato</a>
+
+    <button class="btn btn-danger btn-block" ng-click="deleteContact(contacts)"
+        ng-show="isSelectedContact(contacts)">Apagar contatos</button>
+    <!-- ng-disabled="!isSelectedContact(contacts)" -->
+
+    <!-- {{name}}
+    {{phone}} -->
+</div>
